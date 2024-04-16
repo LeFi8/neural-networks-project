@@ -9,3 +9,7 @@
 
 ## To add dependencies
 `poetry add <dependency>`
+
+# Authorship
+- LeFi8
+- MichaelTheSlav
