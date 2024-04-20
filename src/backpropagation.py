@@ -10,7 +10,7 @@ def sigmoid_derivative(x):
     return x * (1 - x)
 
 
-epochs = 5000
+epochs = 25000
 learning_rate = 0.5  #eta
 
 X1 = np.array([[1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]])
