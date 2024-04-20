@@ -1,62 +1,64 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-y = np.array([[0], [1], [1], [0]])
-
-epochs = 3000
-learning_rate = 0.5  #eta
-
-input_layer_size = 2
-hidden_layer_size = 2
-output_layer_size = 1
-
 
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 
 def sigmoid_derivative(x):
-    return x * (1 - x)
+    return sigmoid(x) * (1 - sigmoid(x))
 
+
+epochs = 5000
+learning_rate = 0.5  #eta
+
+input_layer_size = 2
+hidden_layer_size = 2
+output_layer_size = 1
+
+X1 = np.array([[1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]])
+y = np.array([[0], [1], [1], [0]])
 
 #weights
 W2 = np.array([
-    #[0.86, 0.82],
+    [0.86, 0.82],
     [-0.16, -0.51],
     [0.28, -0.89]
 ])
-b1 = np.zeros((1, hidden_layer_size))
 W3 = np.array([
-    #[0.04],
+    [0.04],
     [-0.43],
     [0.48]
 ])
-b2 = np.zeros((1, output_layer_size))
 
 loss_values = []
 
 for epoch in range(epochs):
     # Forward propagation
-    hidden_layer = sigmoid(np.dot(X, W2) + b1)
-    output_layer = sigmoid(np.dot(hidden_layer, W3) + b2)
+    X2 = sigmoid(np.dot(X1, W2))
+    X2 = np.hstack((np.ones((4, 1)), X2))
+    X3 = sigmoid(np.dot(X2, W3))
+
     # loss
-    loss = np.mean(0.5 * (y - output_layer) ** 2)
+    loss = np.mean(0.5 * (y - X3) ** 2)
     loss_values.append(loss)
+
     # Backward propagation
-    output_delta = (y - output_layer) * sigmoid_derivative(output_layer)
-    hidden_delta = output_delta.dot(W3.T) * sigmoid_derivative(hidden_layer)
+    delta3 = (y - X3) * sigmoid_derivative(X3)
+    delta2 = delta3.dot(W3[1:3].T) * sigmoid_derivative(X2[:, 1:3])
+
     # weights and biases
-    W3 += hidden_layer.T.dot(output_delta) * learning_rate
-    b2 += np.sum(output_delta, axis=0, keepdims=True) * learning_rate
-    W2 += np.dot(X.T, hidden_delta) * learning_rate
-    b1 += np.sum(hidden_delta, axis=0, keepdims=True) * learning_rate
+    W3 += X2.T.dot(delta3) * learning_rate
+    W2 += X1.T.dot(delta2) * learning_rate
 
 
-def calculate_xor_output(input):
-    hidden_layer = sigmoid(np.dot(input, W2) + b1)
-    output_layer = sigmoid(np.dot(hidden_layer, W3) + b2)
-    return output_layer
+def calculate_xor_output(x1):
+    x1 = np.hstack((np.ones((4, 1)), x1))
+    x2 = sigmoid(np.dot(x1, W2))
+    x2 = np.hstack((np.ones((4, 1)), x2))
+    x3 = sigmoid(np.dot(x2, W3))
+    return x3
 
 
 test_input = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
@@ -67,8 +69,8 @@ print("XOR Output:")
 print(xor_output.round())
 
 x = np.linspace(-0.5, 1.5, 100)
-y1 = (-b1[0, 0] - W2[0, 0] * x) / W2[1, 0]
-y2 = (-b1[0, 1] - W2[0, 1] * x) / W2[1, 1]
+y1 = (-W2[0, 0]-W2[1, 0] * x) / W2[2, 0]
+y2 = (-W2[0, 1]-W2[1, 1] * x) / W2[2, 1]
 
 # Plotting the loss graph
 plt.plot(range(epochs), loss_values)
@@ -77,7 +79,7 @@ plt.ylabel('Loss')
 plt.show()
 
 # Plotting the XOR data and decision lines
-plt.scatter(X[:, 0], X[:, 1], c=y.ravel(), cmap='bwr')
+plt.scatter(X1[:, 1], X1[:, 2], c=y.ravel(), cmap='bwr')
 plt.plot(x, y1, 'g-', label='Decision Line 1')
 plt.plot(x, y2, 'r-', label='Decision Line 2')
 plt.title('XOR Gate Decision Lines')
