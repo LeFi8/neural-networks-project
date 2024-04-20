@@ -7,15 +7,11 @@ def sigmoid(x):
 
 
 def sigmoid_derivative(x):
-    return sigmoid(x) * (1 - sigmoid(x))
+    return x * (1 - x)
 
 
 epochs = 5000
 learning_rate = 0.5  #eta
-
-input_layer_size = 2
-hidden_layer_size = 2
-output_layer_size = 1
 
 X1 = np.array([[1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]])
 y = np.array([[0], [1], [1], [0]])
@@ -35,20 +31,20 @@ W3 = np.array([
 loss_values = []
 
 for epoch in range(epochs):
-    # Forward propagation
+    # forward propagation
     X2 = sigmoid(np.dot(X1, W2))
-    X2 = np.hstack((np.ones((4, 1)), X2))
+    X2 = np.hstack((np.ones((4, 1)), X2))  #add dummy input
     X3 = sigmoid(np.dot(X2, W3))
 
     # loss
     loss = np.mean(0.5 * (y - X3) ** 2)
     loss_values.append(loss)
 
-    # Backward propagation
+    # backward propagation
     delta3 = (y - X3) * sigmoid_derivative(X3)
-    delta2 = delta3.dot(W3[1:3].T) * sigmoid_derivative(X2[:, 1:3])
+    delta2 = delta3.dot(W3[1:, :].T) * sigmoid_derivative(X2[:, 1:])
 
-    # weights and biases
+    # weights
     W3 += X2.T.dot(delta3) * learning_rate
     W2 += X1.T.dot(delta2) * learning_rate
 
@@ -68,10 +64,6 @@ print(test_input)
 print("XOR Output:")
 print(xor_output.round())
 
-x = np.linspace(-0.5, 1.5, 100)
-y1 = (-W2[0, 0]-W2[1, 0] * x) / W2[2, 0]
-y2 = (-W2[0, 1]-W2[1, 1] * x) / W2[2, 1]
-
 # Plotting the loss graph
 plt.plot(range(epochs), loss_values)
 plt.xlabel('Epoch')
@@ -79,6 +71,10 @@ plt.ylabel('Loss')
 plt.show()
 
 # Plotting the XOR data and decision lines
+x = np.linspace(-0.5, 1.5, 100)
+y1 = (-W2[0, 0] - W2[1, 0] * x) / W2[2, 0]
+y2 = (-W2[0, 1] - W2[1, 1] * x) / W2[2, 1]
+
 plt.scatter(X1[:, 1], X1[:, 2], c=y.ravel(), cmap='bwr')
 plt.plot(x, y1, 'g-', label='Decision Line 1')
 plt.plot(x, y2, 'r-', label='Decision Line 2')
