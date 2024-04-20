@@ -42,11 +42,14 @@ for epoch in range(epochs):
 
     # backward propagation
     delta3 = (y - X3) * sigmoid_derivative(X3)
-    delta2 = delta3.dot(W3[1:, :].T) * sigmoid_derivative(X2[:, 1:])
+    print(delta3)
+    print(W3.T)
+    print(delta3.dot(W3.T))
+    delta2 = delta3.dot(W3.T) * sigmoid_derivative(X2)
 
     # weights
     W3 += X2.T.dot(delta3) * learning_rate
-    W2 += X1.T.dot(delta2) * learning_rate
+    W2 += (X1.T.dot(delta2))[:, 1:] * learning_rate
 
 
 def calculate_xor_output(x1):
