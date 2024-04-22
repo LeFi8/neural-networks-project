@@ -1,52 +1,69 @@
+from matplotlib import pyplot as plt
+
+
 class Perceptron:
     def __init__(self, x: list[list[float]], w0: list[float], ro: int = 1):
         self.x = x
         self.w = w0
         self.ro = ro
-        self.d_and = [0, 0, 0, 1]
-        self.d_xor = [0, 1, 1, 0]
         self.y = [0, 0, 0, 0]
+        self.d = [0, 0, 0, 0]
 
-    def activation_function(self, x):
+        for i in range(len(x)):
+            for j in range(len(x[i])):
+                self.d[i] = x[i][1] and x[i][2]
+
+    @classmethod
+    def activation_function(cls, x):
         return 1 if x > 0 else 0
 
     def train_and(self):
-        iteration = 0
+        iteration = 2  # FIXME: why 2?
         while True:
-            i = iteration % 4
-
-            if iteration % 4 == 0:
-                self.get_y(self.x, self.w, i)
-
-            print(f"\nIteration: {iteration + 1}")
+            i = iteration % len(self.x)
+            print(f"\nIteration: {iteration}")
             print(f"Current weights: {self.w}")
-            new_w = self.new_w(i)
-            self.w = new_w
 
-            if iteration % 4 == 0 and self.y == self.d_and:
+            self.set_y(self.x, self.w, i)
+            self.y[i] = self.activation_function(self.y[i])
+            print(f"Current y: {self.y}")
+
+            self.update_weights(i)
+            print(f"Updated weights: {self.w}")
+
+            if iteration % len(self.x) == 0 and self.y == self.d:
                 print(f"Final weights: {self.w}")
                 break
-            
-            iteration += 1
-            
 
-    def new_w(self, iteration) -> list[float]:
-        new_w = [0, 0, 0]
+            iteration += 1
+
+    def update_weights(self, iteration) -> list[float]:
         for i in range(len(self.w)):
-            new_w[i] = self.w[i] + self.ro * (self.d_and[iteration] - self.y[iteration]) * self.x[iteration][i]
-        return new_w
-    
-    def get_y(self, x, w, iteration) -> float:
+            self.w[i] += (
+                self.ro * (self.d[iteration] - self.y[iteration]) * self.x[iteration][i]
+            )
+
+    def set_y(self, x, w, iteration) -> float:
         for i in range(len(x[iteration])):
             self.y[iteration] += x[iteration][i] * w[i]
-        
-        self.y[iteration] = self.activation_function(self.y[iteration])
-        print(f"Current y: {self.y}")
-    
+
 
 if __name__ == "__main__":
-    x = [[1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]
+    x1 = [1, 0, 0]
+    x2 = [1, 0, 1]
+    x3 = [1, 1, 0]
+    x4 = [1, 1, 1]
+    x = [x1, x2, x3, x4]
+    plt.plot(x1, color="green")
+    plt.plot(x2, color="green")
+    plt.plot(x3, color="green")
+    plt.plot(x4, color="green")
+
     w0 = [0.5, 0, 1]
+    plt.plot(w0, color="blue")
+
     perceptron = Perceptron(x, w0)
     perceptron.train_and()
-    print(perceptron.w)
+
+    plt.plot(perceptron.w, color="red")
+    plt.show()
