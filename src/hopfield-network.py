@@ -1,7 +1,5 @@
 import numpy as np
 
-sync = True
-
 
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
@@ -38,6 +36,18 @@ def array_contains(array_list, array):
             return True
 
     return False
+
+
+def ask_for_options():
+    print("Use synchronous or asynchronous mode? [S, a]")
+    mode = input()
+    sync = True if mode[0] == "S" or mode[0] == "s" else False
+    print("How many neurons in the network?")
+    neuron_num = int(input())
+    print("How many vectors to test?")
+    vector_num = int(input())
+
+    return sync, neuron_num, vector_num
 
 
 def ascertain_stability(matrix):
@@ -95,48 +105,48 @@ def asynchronous_mode(x, w, f, sig):
     return x
 
 
-X = np.random.rand(3, 1)
-X_prev = []
+sync, neuron_num, vector_num = ask_for_options()
 
-print(X)
+X_array = np.random.rand(vector_num, neuron_num)
 
-W = [
-    [0, -3, 3],
-    [-2, 0, -4],
-    [-7, 5, 0]
-]
+print("Vectors")
+print_array(X_array)
 
+W = np.random.rand(neuron_num, neuron_num)
+
+print("Weights")
 print(W)
 
 ascertain_stability(W)
 
-print("Testing…")
+for x in range(len(X_array)):
+    print("Testing vector number " + str(x+1) + "…")
 
-for it in range(10000):
+    X = X_array[x]
+    X_prev = []
+
+    for it in range(10000):
+        X_prev.append(X.copy())
+
+        if len(X_prev) > 8:
+            X_prev = X_prev[1:]
+
+        if sync is True:
+            X = synchronous_mode(X, W, sigmoid, 0.)
+        else:
+            X = asynchronous_mode(X, W, sigmoid, 0.)
+
+        if array_contains(X_prev, X):
+            break
+
+    cycle = find_cycle(X, X_prev)
     X_prev.append(X.copy())
-    print(X)
 
-    if len(X_prev) > 8:
-        X_prev = X_prev[1:]
-
-    if sync is True:
-        X = synchronous_mode(X, W, sigmoid, 0.)
-    else:
-        X = asynchronous_mode(X, W, sigmoid, 0.)
-
-    if array_contains(X_prev, X):
-        break
-
-cycle = find_cycle(X, X_prev)
-X_prev.append(X.copy())
-
-if cycle == 0:
-    print("Network is stable")
-    print(X)
-elif cycle > 0:
-    print("Network failed to stabilize")
-    print("Cycle every " + str(cycle + 1) + " iterations")
-    print_array(X_prev)
-elif cycle == -1:
-    print("Network failed to stabilize")
-    print_array(X_prev)
+    if cycle == 0:
+        print("Network is stable")
+        print(X)
+    elif cycle > 0:
+        print("Network failed to stabilize")
+        print("Cycle every " + str(cycle + 1) + " iterations")
+    elif cycle == -1:
+        print("Network failed to stabilize")
