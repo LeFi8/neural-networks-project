@@ -1,12 +1,11 @@
 import numpy as np
 
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
-
-
-def tangensoid(x):
-    return np.tan(x)
+def f1(x):
+    if (x > 0):
+        return 1
+    else:
+        return 0
 
 
 def is_symmetric(matrix):
@@ -132,9 +131,9 @@ for x in range(len(X_array)):
             X_prev = X_prev[1:]
 
         if sync is True:
-            X = synchronous_mode(X, W, sigmoid, 0.)
+            X = synchronous_mode(X, W, f1, 0.)
         else:
-            X = asynchronous_mode(X, W, sigmoid, 0.)
+            X = asynchronous_mode(X, W, f1, 0.)
 
         if array_contains(X_prev, X):
             break
