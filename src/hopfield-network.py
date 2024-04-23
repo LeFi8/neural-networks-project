@@ -62,11 +62,11 @@ def find_cycle(x, x_prev):
     return -1
 
 
-def synchronous_mode(x, w, f, i):
+def synchronous_mode(x, w, f, sig):
     x_prime = x.copy()
 
     for i in range(len(x)):
-        x_prime[i] = 0. + i
+        x_prime[i] = 0. + sig
         for j in range(len(x)):
             x_prime[i] += w[i][j] * x[j]
         x_prime[i] = f(x_prime[i])
@@ -80,23 +80,25 @@ X_prev = []
 
 print(X)
 
-W = [
-    [0, -3, 0],
-    [2, 0, 1],
-    [-1, 1, 0]
-]
+# W = [
+#     [0, -3, 0],
+#     [2, 0, 1],
+#     [-1, 1, 0]
+# ]
+
+W = np.random.rand(3, 3)
 
 print(W)
 
 ascertain_stability(W)
 
-for iter in range(10000):
+for it in range(10000):
     X_prev.append(X.copy())
 
     if len(X_prev) > 8:
         X_prev = X_prev[1:]
 
-    X = synchronous_mode(X, W, sigmoid, 2)
+    X = synchronous_mode(X, W, sigmoid, 0.)
 
     if array_contains(X_prev, X):
         break
