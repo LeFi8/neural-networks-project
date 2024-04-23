@@ -20,7 +20,6 @@ class PerceptronBUPA:
     def train(self):
         iteration = 1
         curr_weights = self.initial_weights
-        curr_errors = np.ones(len(self.x))
 
         while True:
             weight_sums = np.zeros(len(self.x[0]))
@@ -38,16 +37,19 @@ class PerceptronBUPA:
                 print(f"Current weights: {curr_weights}")
 
                 self.update_weight_sums(weight_sums, error, x[i])
-                iteration += 1
                 print(f"")
 
             if self.is_not_solution(curr_errors):
                 curr_weights = self.update_weights(curr_weights, weight_sums)
                 print(f"###############")
+                print(f"Interation: {iteration}")
                 print(f"Updated weights: {curr_weights}")
                 print(f"###############\n")
+                plot_perceptron_step(self.x, curr_weights, self.perceptron_func, f"Iteration: {iteration}")
+                iteration += 1
             else:
                 print(f"Final weights: {curr_weights}")
+                print(f"Learning process took: {iteration-1} iterations!")
                 break
 
     def update_weight_sums(self, weight_sums, error, x):
@@ -73,6 +75,15 @@ class PerceptronBUPA:
         return sum
 
 if __name__ == "__main__":
+    # x1 = [1, 0, 0]
+    # x2 = [1, 0, 1]
+    # x3 = [1, 1, 0]
+    # x4 = [1, 1, 1]
+    # x = [x1, x2, x3, x4]
+    #
+    # # wagi
+    # w0 = [1, 0, 1]
+
     x1 = [1, 0, 0]
     x2 = [1, 0, 1]
     x3 = [1, 1, 0]
@@ -80,7 +91,7 @@ if __name__ == "__main__":
     x = [x1, x2, x3, x4]
 
     # wagi
-    w0 = [1, 0, 1]
+    w0 = [0.5, 0, 1]
 
     perceptron = PerceptronBUPA(x, w0, perceptron_func=perceptron_and_x2_negation)
     perceptron.train()
