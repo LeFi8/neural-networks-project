@@ -27,6 +27,7 @@ Przykładowym rozwiązaniem tego problemu jest na przykład podniesienie zbióru
 ### Przykładowo wygenerowane wykresy
 
 # Sieć Hopfielda
+Sieć neuronowa, która tak samo jak perceptron posiada neurony oraz ich połączenia.
 
 ### Tryb synchroniczny
 
@@ -37,6 +38,14 @@ Przykładowym rozwiązaniem tego problemu jest na przykład podniesienie zbióru
 ### Przykładowo wygenerowane wykresy
 
 # Algorytm Propagacji Wstecznej
+
+Posiadając dużą sieć neuronową z wieloma warstwami, używając algorytmu propagacji wstecznej jesteśmy w stanie modyfikować wagi we wszystkich jej warstwach. Korzystając z tego algorytmu cofamy się do tyłu, warstwa po warstwie, tak jak to nazwa wskazuje, dochodząc do wybranej przez nas warstwy, aby zmienić jej wagę.
+
+### Energia całkowita
+Korzystając z energii całkowitej, wagi są aktualizowane po prezentacji wszystkich wektorów wejściowych.
+
+### Energia cząstkowa
+W przypadku korzystania z energii cząstkowej, wagi są aktualizowane po każdym pojedynczym prezentowanym wektorze wejściowym.
 
 ## Opis fragmentów kodu
 
