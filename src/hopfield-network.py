@@ -50,18 +50,18 @@ def ask_for_options():
     return sync, neuron_num, vector_num
 
 
-def ascertain_stability(matrix):
+def ascertain_stability(matrix, sync_mode):
     print("Hopfield network stability")
     print("First condition: weight matrix is symmetric")
     print("PASSED") if is_symmetric(matrix) else print("FAILED")
     print("Second condition: weight matrix diagonal is zeroes")
     print("PASSED") if is_diagonal_zeroes(matrix) else print("FAILED")
 
-    if sync is True:
+    if sync_mode is True:
         print("Third condition: weight matrix has positive definiteness")
         print("PASSED") if is_positively_defined(matrix) else print("FAILED")
 
-    if sync is False and is_symmetric(matrix) and is_diagonal_zeroes(matrix) or sync == True and is_symmetric(
+    if sync_mode is False and is_symmetric(matrix) and is_diagonal_zeroes(matrix) or sync_mode is True and is_symmetric(
             matrix) and is_diagonal_zeroes(matrix) and is_positively_defined(matrix):
         print("The network will certainly stabilize")
     else:
@@ -107,7 +107,7 @@ def asynchronous_mode(x, w, f, sig):
 
 sync, neuron_num, vector_num = ask_for_options()
 
-X_array = np.random.rand(vector_num, neuron_num)
+X_array = np.random.randint(2, size=(vector_num, neuron_num))
 
 print("Vectors")
 print_array(X_array)
@@ -117,10 +117,10 @@ W = np.random.rand(neuron_num, neuron_num)
 print("Weights")
 print(W)
 
-ascertain_stability(W)
+ascertain_stability(W, sync)
 
 for x in range(len(X_array)):
-    print("Testing vector number " + str(x+1) + "…")
+    print("Testing vector number " + str(x + 1) + "…")
 
     X = X_array[x]
     X_prev = []
