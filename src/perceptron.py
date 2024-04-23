@@ -26,6 +26,7 @@ class Perceptron:
             self.set_y(self.x, self.w, i)
             self.y[i] = self.activation_function(self.y[i])
             print(f"Current y: {self.y}")
+            print(f"Expected values (d): {self.d}")
 
             self.update_weights(i)
             print(f"Updated weights: {self.w}")
