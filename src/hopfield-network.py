@@ -7,6 +7,10 @@ def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 
+def tangensoid(x):
+    return np.tan(x)
+
+
 def is_symmetric(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
@@ -54,6 +58,11 @@ def ascertain_stability(matrix):
         print("It is not certain if the network will stabilize")
 
 
+def print_array(array):
+    for i in range(len(array)):
+        print(array[i])
+
+
 def find_cycle(x, x_prev):
     for i in range(len(x_prev)):
         if np.array_equal(x_prev[len(x_prev) - i - 1], x):
@@ -75,30 +84,45 @@ def synchronous_mode(x, w, f, sig):
     return x
 
 
+def asynchronous_mode(x, w, f, sig):
+    for i in range(len(x)):
+        x_prime = 0. + sig
+        for j in range(len(x)):
+            x_prime += w[i][j] * x[j]
+        x_prime = f(x_prime)
+        x[i] = x_prime
+
+    return x
+
+
 X = np.random.rand(3, 1)
 X_prev = []
 
 print(X)
 
 W = [
-    [-278, -3, 15],
-    [2, 432, -174],
-    [-1, 1, -158]
+    [0, -3, 3],
+    [-2, 0, -4],
+    [-7, 5, 0]
 ]
-
-#W = np.random.rand(3, 3)
 
 print(W)
 
 ascertain_stability(W)
 
+print("Testing…")
+
 for it in range(10000):
     X_prev.append(X.copy())
+    print(X)
 
     if len(X_prev) > 8:
         X_prev = X_prev[1:]
 
-    X = synchronous_mode(X, W, sigmoid, 0.)
+    if sync is True:
+        X = synchronous_mode(X, W, sigmoid, 0.)
+    else:
+        X = asynchronous_mode(X, W, sigmoid, 0.)
 
     if array_contains(X_prev, X):
         break
@@ -112,7 +136,7 @@ if cycle == 0:
 elif cycle > 0:
     print("Network failed to stabilize")
     print("Cycle every " + str(cycle + 1) + " iterations")
-    print(X_prev)
+    print_array(X_prev)
 elif cycle == -1:
     print("Network failed to stabilize")
-    print(X_prev)
+    print_array(X_prev)
