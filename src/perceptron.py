@@ -31,6 +31,8 @@ class Perceptron:
             self.update_weights(i)
             print(f"Updated weights: {self.w}")
 
+            plot_perceptron_step(self.x, self.w, perceptron_and, f"Iteration: {iteration}")
+
             if iteration % len(self.x) == 0 and self.y == self.d:
                 print(f"Final weights: {self.w}")
                 break
@@ -70,26 +72,29 @@ def plot_point(x: list[float], perceptron_func):
     plt.plot(x[1], x[2], 'o', color=color)
     plt.text(x[1], x[2], "(" + str(x[1]) + ", " + str(x[2]) + ")")
 
+def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = ""):
+    if label == "":
+        plt.figure()
+    else:
+        plt.figure(label)
+
+    for xi in x:
+        plot_point(xi, perceptron_func)
+    plot_linear_function(w)
+
 if __name__ == "__main__":
     x1 = [1, 0, 0]
     x2 = [1, 0, 1]
     x3 = [1, 1, 0]
     x4 = [1, 1, 1]
     x = [x1, x2, x3, x4]
-    plot_point(x1, perceptron_and)
-    plot_point(x2, perceptron_and)
-    plot_point(x3, perceptron_and)
-    plot_point(x4, perceptron_and)
 
-    # wagi - nie musimy ich wyświetlać
+    # wagi
     w0 = [0.5, 0, 1]
-    #plt.plot(w0, color="blue")
 
     perceptron = Perceptron(x, w0)
     perceptron.train_and()
 
-    # plt.plot(perceptron.w, color="red")
-    plot_linear_function(perceptron.w)
     plt.show()
 
 
