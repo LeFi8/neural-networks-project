@@ -224,6 +224,8 @@ def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = 
     plot_linear_function(w)
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### Przykładowo wygenerowane wykresy
 
 #### PA
@@ -233,11 +235,15 @@ def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = 
 ![](./images/PA_iter14.jpg)
 ![](./images/PA_iter24.jpg)
 
+<div style="page-break-after: always;"></div>
+
 #### BUPA
 
 ![](./images/BUPA_console.jpg)
 ![](./images/BUPA_iter1.jpg)
 ![](./images/BUPA_iter3.jpg)
+
+<div style="page-break-after: always;"></div>
 
 # Sieć Hopfielda
 
@@ -265,14 +271,14 @@ W przypadku korzystania z energii cząstkowej, wagi są aktualizowane po każdym
 
 ## Opis fragmentów kodu
 
-Wektory wejściowe, wektor dla funkcji xor
+#### Wektory wejściowe, wektor dla funkcji xor
 
 ```python
 X1 = np.array([[1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]])
 Y = np.array([[0], [1], [1], [0]])
 ```
 
-Wagi wejściowe, zgodne z poleceniem
+#### Wagi wejściowe, zgodne z poleceniem
 
 ```python
 def initial_weights():
@@ -289,7 +295,7 @@ def initial_weights():
     return W2, W3
 ```
 
-Funkcja wyliczająca xor z macierzy wektorów wejściowych i wag
+#### Funkcja wyliczająca xor z macierzy wektorów wejściowych i wag
 
 ```python
 def calculate_xor():
@@ -305,7 +311,7 @@ def calculate_xor():
     print(x3.round())
 ```
 
-Funkcje do rysowania wykresów
+#### Funkcje do rysowania wykresów
 
 ```python
 def plot_loss_graph():
@@ -330,7 +336,7 @@ def plot_decision_boundary():
     plt.show()
 ```
 
-Wsteczna propagacja z uwzględnieniem energii całkowitej
+#### Wsteczna propagacja z uwzględnieniem energii całkowitej
 
 ```python
 #################
@@ -362,7 +368,7 @@ plot_loss_graph()
 plot_decision_boundary()
 ```
 
-Wsteczna propagacja z uwzględnieniem energii cząstkowej
+#### Wsteczna propagacja z uwzględnieniem energii cząstkowej
 
 ```python
 #################
@@ -400,12 +406,16 @@ plot_loss_graph()
 plot_decision_boundary()
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### Przykładowo wygenerowane wykresy
 
 #### Dla energii całkowitej
 
 ![](e_calkowita.jpg)
 ![](./images/xor_linie_graniczne.jpg)
+
+<div style="page-break-after: always;"></div>
 
 #### Dla energii cząstkowej
 
