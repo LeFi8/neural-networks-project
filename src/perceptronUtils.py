@@ -4,6 +4,9 @@ import numpy as np
 def perceptron_and(x: list[float]) -> float:
     return x[1] and x[2]
 
+def perceptron_and_x2_negation(x: list[float]) -> float:
+    return float(x[1] and not x[2])
+
 def calc_linear_func(x, w: list[float]):
     xf = []
     for xi in x:

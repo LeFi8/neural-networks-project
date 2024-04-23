@@ -1,6 +1,6 @@
 from perceptronUtils import *
 
-class PerceptronPA:
+class PerceptronBUPA:
     def __init__(self, x: list[list[float]], w0: list[float], perceptron_func, ro: int = 1):
         self.x = x
         self.initial_weights = w0
@@ -22,7 +22,8 @@ class PerceptronPA:
         curr_weights = self.initial_weights
         curr_errors = np.ones(len(self.x))
 
-        while self.is_not_solution(curr_errors):
+        while True:
+            weight_sums = np.zeros(len(self.x[0]))
             curr_errors = np.zeros(len(self.x))
             for i in range(len(self.x)):
                 v = self.calc_v(x[i], curr_weights)
@@ -30,27 +31,33 @@ class PerceptronPA:
                 error = self.d[i] - y
                 curr_errors[i] = error
 
-                print(f"Iteration: {iteration}")
                 print(f"Current v: {v}")
-                print(f"Current f(v): {y}")
-                print(f"Expected f(v): {self.d[i]}")
+                print(f"Current f(v): {int(y)}")
+                print(f"Expected f(v): {int(self.d[i])}")
                 print(f"Current error: {error}")
                 print(f"Current weights: {curr_weights}")
 
-                plot_perceptron_step(self.x, curr_weights, self.perceptron_func, f"Iteration: {iteration}")
-                curr_weights = self.update_weights(curr_weights, error, x[i])
-
-                print(f"Updated weights: {curr_weights}")
-
+                self.update_weight_sums(weight_sums, error, x[i])
                 iteration += 1
+                print(f"")
 
-                print(f"\n")
+            if self.is_not_solution(curr_errors):
+                curr_weights = self.update_weights(curr_weights, weight_sums)
+                print(f"###############")
+                print(f"Updated weights: {curr_weights}")
+                print(f"###############\n")
+            else:
+                print(f"Final weights: {curr_weights}")
+                break
 
+    def update_weight_sums(self, weight_sums, error, x):
+        for i in range(len(weight_sums)):
+            weight_sums[i] += error * x[i]
 
-    def update_weights(self, curr_weights, error, x):
+    def update_weights(self, curr_weights, weight_sums):
         updated_weights = np.copy(curr_weights)
         for i in range(len(updated_weights)):
-            updated_weights[i] += self.ro * error * x[i]
+            updated_weights[i] += self.ro * weight_sums[i]
         return updated_weights
 
     def is_not_solution(self, errors):
@@ -65,7 +72,6 @@ class PerceptronPA:
             sum += x[i] * w[i]
         return sum
 
-
 if __name__ == "__main__":
     x1 = [1, 0, 0]
     x2 = [1, 0, 1]
@@ -74,9 +80,9 @@ if __name__ == "__main__":
     x = [x1, x2, x3, x4]
 
     # wagi
-    w0 = [0.5, 0, 1]
+    w0 = [1, 0, 1]
 
-    perceptron = PerceptronPA(x, w0, perceptron_func=perceptron_and)
+    perceptron = PerceptronBUPA(x, w0, perceptron_func=perceptron_and_x2_negation)
     perceptron.train()
 
     plt.show()
