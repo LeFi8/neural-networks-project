@@ -1,11 +1,29 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
-def perceptron_and(x: list[float]) -> float:
-    return x[1] and x[2]
+def perceptron_xor(x: list[float]) -> float:
+    return 1 if x[1] != x[2] else 0
+
+def perceptron_xor_negation(x: list[float]) -> float:
+    return 0 if x[1] != x[2] else 1
+
+def perceptron_and(x):
+    return 1 if np.all(x[1:]) else 0
 
 def perceptron_and_x2_negation(x: list[float]) -> float:
-    return float(x[1] and not x[2])
+    return 1 if x[1] == 1 and x[2] == 0 else 0
+
+def perceptron_or(x: list[float]) -> float:
+    return 1 if x[1] == 1 or x[2] == 1 else 0
+
+def perceptron_or_negation(x: list[float]) -> float:
+    return 0 if x[1] == 1 or x[2] == 1 else 1
+
+def perceptron_or_x1_negation(x: list[float]) -> float:
+    return 1 if x[1] == 0 or x[2] == 1 else 0
+
+def perceptron_and_x1_negation(x: list[float]) -> float:
+    return 1 if x[1] == 0 and x[2] == 1 else 0
 
 def calc_linear_func(x, w: list[float]):
     xf = []
@@ -35,3 +53,4 @@ def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = 
     for xi in x:
         plot_point(xi, perceptron_func)
     plot_linear_function(w)
+

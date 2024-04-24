@@ -75,25 +75,19 @@ class PerceptronBUPA:
         return sum
 
 if __name__ == "__main__":
-    # x1 = [1, 0, 0]
-    # x2 = [1, 0, 1]
-    # x3 = [1, 1, 0]
-    # x4 = [1, 1, 1]
-    # x = [x1, x2, x3, x4]
-    #
-    # # wagi
-    # w0 = [1, 0, 1]
-
     x1 = [1, 0, 0]
     x2 = [1, 0, 1]
     x3 = [1, 1, 0]
     x4 = [1, 1, 1]
     x = [x1, x2, x3, x4]
 
+    # # wagi
+    # w0 = [1, 0, 1]
+
     # wagi
     w0 = [0.5, 0, 1]
 
-    perceptron = PerceptronBUPA(x, w0, perceptron_func=perceptron_and_x2_negation)
+    perceptron = PerceptronBUPA(x, w0, perceptron_func=perceptron_and)
     perceptron.train()
 
     plt.show()
