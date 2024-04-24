@@ -228,6 +228,9 @@ def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = 
 
 ### Przykładowo wygenerowane wykresy
 
+#### Wykres xor
+![](./images/perceptron_xor.jpg)
+
 #### PA
 
 ![](./images/PA_console.jpg)
@@ -247,13 +250,117 @@ def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = 
 
 # Sieć Hopfielda
 
-Sieć neuronowa, która tak samo jak perceptron posiada neurony oraz ich połączenia.
+Sieć neuronowa, która tak samo jak perceptron posiada neurony oraz ich połączenia. Sieć Hopfielda przechowuje i zapamiętuje (pamięc asocjacyjna), pewne n-wymiarowe binarne wektory, podczas fazy "trenowania".
 
 ### Tryb synchroniczny
+W trybie synchronicznym, modyfikujemy wszystkie neurony na raz, w tym samym czasie.
 
 ### Tryb asynchroniczny
+W trybie asynchronicznym neurony są aktualizowane niezależnie od siebie, nie w tym samym czasie. Możliwy jest losowy lub cykliczny wybór następnych neuronów do aktualizacji.
 
 ## Opis fragmentów kodu
+
+#### Sprawdzenie warunków stabilności
+```python
+def ascertain_stability(matrix, sync_mode):
+    print("Hopfield network stability")
+    print("First condition: weight matrix is symmetric")
+    print("PASSED") if is_symmetric(matrix) else print("FAILED")
+    print("Second condition: weight matrix diagonal is zeroes")
+    print("PASSED") if is_diagonal_zeroes(matrix) else print("FAILED")
+  
+    if sync_mode is True:
+        print("Third condition: weight matrix has positive definiteness")
+        print("PASSED") if is_positively_defined(matrix) else print("FAILED")
+  
+    if sync_mode is False and is_symmetric(matrix) and is_diagonal_zeroes(matrix) or sync_mode is True and is_symmetric(
+            matrix) and is_diagonal_zeroes(matrix) and is_positively_defined(matrix):
+        print("The network will certainly stabilize")
+    else:
+        print("It is not certain if the network will stabilize")
+
+def is_symmetric(matrix):
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if matrix[i][j] != matrix[j][i]:
+                return False
+    return True
+
+def is_diagonal_zeroes(matrix):
+    for i in range(len(matrix)):
+        if matrix[i][i] != 0:
+            return False
+    return True
+```
+
+#### Przejścia
+```python
+def find_cycle(x, x_prev):
+    for i in range(len(x_prev)):
+        if np.array_equal(x_prev[len(x_prev) - i - 1], x):
+            return i
+    return -1
+
+for x in range(len(X_array)):
+    print("Testing vector number " + str(x + 1) + "…")
+  
+    X = X_array[x]
+    X_prev = []
+  
+    for it in range(10000):
+        X_prev.append(X.copy())
+  
+        if len(X_prev) > 8:
+            X_prev = X_prev[1:]
+  
+        if sync is True:
+            X = synchronous_mode(X, W, f1, 0.)
+        else:
+            X = asynchronous_mode(X, W, f1, 0.)
+  
+        if array_contains(X_prev, X):
+            break
+  
+    cycle = find_cycle(X, X_prev)
+    X_prev.append(X.copy())
+  
+    if cycle == 0:
+        print("Network is stable")
+        print(X)
+    elif cycle > 0:
+        print("Network failed to stabilize")
+        print("Cycle every " + str(cycle + 1) + " iterations")
+    elif cycle == -1:
+        print("Network failed to stabilize")
+```
+
+#### Tryb synchroniczny
+```python
+def synchronous_mode(x, w, f, sig):
+    x_prime = x.copy()
+  
+    for i in range(len(x)):
+        x_prime[i] = 0. + sig
+        for j in range(len(x)):
+            x_prime[i] += w[i][j] * x[j]
+        x_prime[i] = f(x_prime[i])
+        x[i] = x_prime[i]
+  
+    return x
+```
+
+#### Tryb asynchroniczny
+```python
+def asynchronous_mode(x, w, f, sig):
+    for i in range(len(x)):
+        x_prime = 0. + sig
+        for j in range(len(x)):
+            x_prime += w[i][j] * x[j]
+        x_prime = f(x_prime)
+        x[i] = x_prime
+  
+    return x
+```
 
 ### Przykładowo wygenerowane wykresy
 
