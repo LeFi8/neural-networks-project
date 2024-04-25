@@ -8,6 +8,7 @@ class PerceptronPA:
         self.y = [0, 0, 0, 0]
         self.perceptron_func = perceptron_func
         self.max_epoch = 10
+        self.final_weights = w0
 
         self.d = [0, 0, 0, 0]
         for i in range(len(x)):
@@ -50,6 +51,7 @@ class PerceptronPA:
                 print(f"\n")
             epoch += 1
         if epoch <= self.max_epoch:
+            self.final_weights = curr_weights
             print(f"\nFinal weights: {curr_weights}")
         else:
             print(f"\nCan not find decision boundary!")
@@ -81,11 +83,13 @@ if __name__ == "__main__":
     x = [x1, x2, x3, x4]
 
     # wagi
-    # w0 = [0.5, 0, 1]
-    w0 = [1, 1, 1]
+    w0 = [0.5, 0, 1]
+    # w0 = [1, 1, 1]
 
-    perceptron = PerceptronPA(x, w0, perceptron_func=perceptron_xor)
+    perceptron = PerceptronPA(x, w0, perceptron_func=perceptron_and)
     perceptron.train()
+
+    plot_plane_3d(perceptron.x, perceptron.final_weights, perceptron.perceptron_func)
 
     plt.show()
 

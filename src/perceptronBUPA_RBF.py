@@ -95,7 +95,8 @@ class PerceptronBUPA_RBF:
 
         xs = self.x[:, 1]
         ys = self.x[:, 2]
-        zs = transformed_data
+        # zs = transformed_data[::-1]
+        zs = transformed_data[::1]
 
         for i in range(len(self.x)):
             plot_point3D(self.x[i], zs[i], ax, self.perceptron_func)
@@ -118,11 +119,24 @@ if __name__ == "__main__":
     x4 = [1, 1, 1]
     x = [x1, x2, x3, x4]
 
-    # w0 = [-30.3, -2.5, 10, 1.2]
-    w0 = [.5, 1, 1, 0]
-    # w0 = [1., 0, 1., 0.]
+    # Uncomment to try data set
 
-    perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor_negation)
+    # DATA SET 1
+    w0 = [0.2, 1, 1, 10]
+    perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
+
+    # # DATA SET 1
+    # w0 = [.2, 1, 1, 0.]
+    # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
+
+    # # DATA SET 2
+    # w0 = [.5, 1, 1, 0]
+    # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
+
+    # # DATA SET 3
+    # w0 = [1., 0, 1., 0.]
+    # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor_negation)
+
     perceptron.train()
     perceptron.plot_rbf_boundaries()
     perceptron.plot_rbf_3d()

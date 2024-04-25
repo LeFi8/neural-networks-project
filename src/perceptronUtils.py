@@ -52,6 +52,23 @@ def plot_point3D(x, x3, ax, perceptron_func):
     ax.scatter(x[1], x[2], x3, color=color, s=100)
     ax.text(x[1], x[2], x3, f"({str(x[1])}, {str(x[2])}, {round(x3, 2)})")
 
+def plot_plane_3d(x, w, perceptron_func):
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    x_range = np.linspace(-0.1, 1.1, 100)
+    z_range = np.linspace(-.6, .6, 100)
+    X, Z = np.meshgrid(x_range, z_range)
+    Y = (-w[1] * X - 0 * Z - w[0]) / w[2]
+
+    for i in range(len(x)):
+        plot_point3D(x[i], 0, ax, perceptron_func)
+
+    ax.plot_surface(X, Y, Z, color='r', alpha=0.5)
+    ax.set_xlabel('Feature 1')
+    ax.set_ylabel('Feature 2')
+    ax.set_zlabel('RBF')
+    plt.title("3D RBF Perceptron Decision Boundary")
+
 def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = ""):
     if label == "":
         plt.figure()
