@@ -8,6 +8,17 @@ def f1(x):
         return 0
 
 
+def generate_weights(size, X_array):
+    W = np.zeros((size, size))
+
+    for X in X_array:
+        X = X.reshape((-1, 1))
+        W += np.dot(X, X.T)  #Hebb’s rule
+        np.fill_diagonal(W, 0)
+
+    return W
+
+
 def is_symmetric(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
@@ -112,7 +123,10 @@ X_array = np.random.randint(2, size=(vector_num, neuron_num))
 print("Vectors")
 print_array(X_array)
 
-W = np.random.rand(neuron_num, neuron_num)
+print("Vectors used for Hebb’s rule")
+print_array(X_array[0:1])
+
+W = generate_weights(neuron_num, X_array[0:1])
 
 print("Weights")
 print(W)
