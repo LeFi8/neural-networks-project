@@ -88,7 +88,8 @@ def synchronous_mode(x, w, f, sig):
         for j in range(len(x)):
             x_prime[i] += w[i][j] * x[j]
         x_prime[i] = f(x_prime[i])
-        x[i] = x_prime[i]
+
+    x = x_prime
 
     return x
 
