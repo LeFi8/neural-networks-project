@@ -42,7 +42,15 @@ def plot_point(x: list[float], perceptron_func):
     if perceptron_func(x) == 0:
         color = "red"
     plt.plot(x[1], x[2], 'o', color=color)
-    plt.text(x[1], x[2], "(" + str(x[1]) + ", " + str(x[2]) + ")")
+    plt.text(x[1], x[2], f"({str(x[1])}, {str(x[2])})")
+
+def plot_point3D(x, x3, ax, perceptron_func):
+    color = "green"
+    if perceptron_func(x) == 0:
+        color = "red"
+
+    ax.scatter(x[1], x[2], x3, color=color, s=100)
+    ax.text(x[1], x[2], x3, f"({str(x[1])}, {str(x[2])}, {round(x3, 2)})")
 
 def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = ""):
     if label == "":

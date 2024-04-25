@@ -87,7 +87,29 @@ class PerceptronBUPA_RBF:
         plt.title("Decision Boundary of RBF Perceptron")
         plt.xlabel("Feature 1")
         plt.ylabel("Feature 2")
-        plt.show()
+
+    def plot_rbf_3d(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        transformed_data = np.dot(self.K, self.final_weights)
+
+        xs = self.x[:, 1]
+        ys = self.x[:, 2]
+        zs = transformed_data
+
+        for i in range(len(self.x)):
+            plot_point3D(self.x[i], zs[i], ax, self.perceptron_func)
+
+        x_range = np.linspace(min(xs)-.5, max(xs)+.5, 100)
+        y_range = np.linspace(min(ys)-.5, max(ys)+.5, 100)
+        X, Y = np.meshgrid(x_range, y_range)
+        Z = (-self.final_weights[1] * X - self.final_weights[2] * Y - self.final_weights[0]) / self.final_weights[3]
+
+        ax.plot_surface(X, Y, Z, color='r', alpha=0.5)
+        ax.set_xlabel('Feature 1')
+        ax.set_ylabel('Feature 2')
+        ax.set_zlabel('RBF')
+        plt.title("3D RBF Perceptron Decision Boundary")
 
 if __name__ == "__main__":
     x1 = [1, 0, 0]
@@ -98,7 +120,11 @@ if __name__ == "__main__":
 
     # w0 = [-30.3, -2.5, 10, 1.2]
     w0 = [.5, 1, 1, 0]
+    # w0 = [1., 0, 1., 0.]
 
-    perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_and)
+    perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor_negation)
     perceptron.train()
     perceptron.plot_rbf_boundaries()
+    perceptron.plot_rbf_3d()
+
+    plt.show()

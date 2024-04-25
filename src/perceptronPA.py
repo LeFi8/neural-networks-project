@@ -74,7 +74,8 @@ if __name__ == "__main__":
     x = [x1, x2, x3, x4]
 
     # wagi
-    w0 = [0.5, 0, 1]
+    # w0 = [0.5, 0, 1]
+    w0 = [1, 1, 1]
 
     perceptron = PerceptronPA(x, w0, perceptron_func=perceptron_and)
     perceptron.train()
