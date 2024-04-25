@@ -7,6 +7,8 @@ class PerceptronBUPA:
         self.ro = ro
         self.y = [0, 0, 0, 0]
         self.perceptron_func = perceptron_func
+        self.max_epoch = 10
+        self.final_weights = w0
 
         self.d = [0, 0, 0, 0]
         for i in range(len(x)):
@@ -22,6 +24,10 @@ class PerceptronBUPA:
         curr_weights = self.initial_weights
 
         while True:
+            if iteration > self.max_epoch:
+                print(f"\nCan not find decision boundary!")
+                return
+
             weight_sums = np.zeros(len(self.x[0]))
             curr_errors = np.zeros(len(self.x))
             for i in range(len(self.x)):
@@ -48,6 +54,7 @@ class PerceptronBUPA:
                 plot_perceptron_step(self.x, curr_weights, self.perceptron_func, f"Iteration: {iteration}")
                 iteration += 1
             else:
+                self.final_weights = curr_weights
                 print(f"Final weights: {curr_weights}")
                 print(f"Learning process took: {iteration-1} iterations!")
                 break
@@ -89,6 +96,7 @@ if __name__ == "__main__":
 
     perceptron = PerceptronBUPA(x, w0, perceptron_func=perceptron_and)
     perceptron.train()
+    plot_plane_3d(perceptron.x, perceptron.final_weights, perceptron.perceptron_func)
 
     plt.show()
 
