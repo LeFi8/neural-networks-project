@@ -7,6 +7,7 @@ class PerceptronPA:
         self.ro = ro
         self.y = [0, 0, 0, 0]
         self.perceptron_func = perceptron_func
+        self.max_epoch = 10
 
         self.d = [0, 0, 0, 0]
         for i in range(len(x)):
@@ -18,12 +19,12 @@ class PerceptronPA:
         return 1 if x > 0 else 0
 
     def train(self):
+        epoch = 1
         iteration = 1
         curr_weights = self.initial_weights
         curr_errors = np.ones(len(self.x))
 
-        while self.is_not_solution(curr_errors):
-            curr_errors = np.zeros(len(self.x))
+        while self.is_not_solution(curr_errors) and epoch <= self.max_epoch:
             for i in range(len(self.x)):
                 v = self.calc_v(x[i], curr_weights)
                 y = self.activation_function(v)
@@ -44,8 +45,14 @@ class PerceptronPA:
 
                 iteration += 1
 
+                if not self.is_not_solution(curr_errors):
+                    break
                 print(f"\n")
-
+            epoch += 1
+        if epoch <= self.max_epoch:
+            print(f"\nFinal weights: {curr_weights}")
+        else:
+            print(f"\nCan not find decision boundary!")
 
     def update_weights(self, curr_weights, error, x):
         updated_weights = np.copy(curr_weights)
@@ -77,7 +84,7 @@ if __name__ == "__main__":
     # w0 = [0.5, 0, 1]
     w0 = [1, 1, 1]
 
-    perceptron = PerceptronPA(x, w0, perceptron_func=perceptron_and)
+    perceptron = PerceptronPA(x, w0, perceptron_func=perceptron_xor)
     perceptron.train()
 
     plt.show()
