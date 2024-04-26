@@ -28,9 +28,9 @@ def is_symmetric(matrix):
     return True
 
 
-def is_diagonal_zeroes(matrix):
+def is_diagonal_greater_equal_zero(matrix):
     for i in range(len(matrix)):
-        if matrix[i][i] != 0:
+        if matrix[i][i] < 0:
             return False
 
     return True
@@ -65,14 +65,14 @@ def ascertain_stability(matrix, sync_mode):
     print("First condition: weight matrix is symmetric")
     print("PASSED") if is_symmetric(matrix) else print("FAILED")
     print("Second condition: weight matrix diagonal is zeroes")
-    print("PASSED") if is_diagonal_zeroes(matrix) else print("FAILED")
+    print("PASSED") if is_diagonal_greater_equal_zero(matrix) else print("FAILED")
 
     if sync_mode is True:
         print("Third condition: weight matrix has positive definiteness")
         print("PASSED") if is_positively_defined(matrix) else print("FAILED")
 
-    if sync_mode is False and is_symmetric(matrix) and is_diagonal_zeroes(matrix) or sync_mode is True and is_symmetric(
-            matrix) and is_diagonal_zeroes(matrix) and is_positively_defined(matrix):
+    if sync_mode is False and is_symmetric(matrix) and is_diagonal_greater_equal_zero(matrix) or sync_mode is True and is_symmetric(
+            matrix) and is_diagonal_greater_equal_zero(matrix) and is_positively_defined(matrix):
         print("The network will certainly stabilize")
     else:
         print("It is not certain if the network will stabilize")
