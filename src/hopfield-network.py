@@ -37,7 +37,8 @@ def is_diagonal_greater_equal_zero(matrix):
 
 
 def is_positively_defined(matrix):
-    return True
+    matrix_values, _ = np.linalg.eig(matrix)
+    return all(val > 0 for val in matrix_values)
 
 
 def array_contains(array_list, array):
