@@ -1,5 +1,4 @@
-from matplotlib import pyplot as plt
-
+from perceptronUtils import *
 
 class Perceptron:
     def __init__(self, x: list[list[float]], w0: list[float], ro: int = 1):
@@ -7,8 +6,8 @@ class Perceptron:
         self.w = w0
         self.ro = ro
         self.y = [0, 0, 0, 0]
-        self.d = [0, 0, 0, 0]
 
+        self.d = [0, 0, 0, 0]
         for i in range(len(x)):
             for j in range(len(x[i])):
                 self.d[i] = x[i][1] and x[i][2]
@@ -27,9 +26,12 @@ class Perceptron:
             self.set_y(self.x, self.w, i)
             self.y[i] = self.activation_function(self.y[i])
             print(f"Current y: {self.y}")
+            print(f"Expected values (d): {self.d}")
 
             self.update_weights(i)
             print(f"Updated weights: {self.w}")
+
+            plot_perceptron_step(self.x, self.w, perceptron_and, f"Iteration: {iteration}")
 
             if iteration % len(self.x) == 0 and self.y == self.d:
                 print(f"Final weights: {self.w}")
@@ -54,16 +56,13 @@ if __name__ == "__main__":
     x3 = [1, 1, 0]
     x4 = [1, 1, 1]
     x = [x1, x2, x3, x4]
-    plt.plot(x1, color="green")
-    plt.plot(x2, color="green")
-    plt.plot(x3, color="green")
-    plt.plot(x4, color="green")
 
+    # wagi
     w0 = [0.5, 0, 1]
-    plt.plot(w0, color="blue")
 
     perceptron = Perceptron(x, w0)
     perceptron.train_and()
 
-    plt.plot(perceptron.w, color="red")
     plt.show()
+
+
