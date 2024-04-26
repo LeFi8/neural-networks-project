@@ -66,8 +66,8 @@ def plot_plane_3d(x, w, perceptron_func):
     ax.plot_surface(X, Y, Z, color='r', alpha=0.5)
     ax.set_xlabel('Feature 1')
     ax.set_ylabel('Feature 2')
-    ax.set_zlabel('RBF')
-    plt.title("3D RBF Perceptron Decision Boundary")
+    ax.set_zlabel('Additional dimesion')
+    plt.title("3D Perceptron Decision Boundary")
 
 def plot_perceptron_step(x: list[list[float]], w, perceptron_func, label: str = ""):
     if label == "":

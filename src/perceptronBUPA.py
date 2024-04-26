@@ -88,10 +88,8 @@ if __name__ == "__main__":
     x4 = [1, 1, 1]
     x = [x1, x2, x3, x4]
 
-    # # wagi
-    # w0 = [1, 0, 1]
-
     # wagi
+    # w0 = [1, 0, 1]
     w0 = [0.5, 0, 1]
 
     perceptron = PerceptronBUPA(x, w0, perceptron_func=perceptron_and)
