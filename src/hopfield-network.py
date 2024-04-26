@@ -63,13 +63,13 @@ def ask_for_options():
 
 def ascertain_stability(matrix, sync_mode):
     print("Hopfield network stability")
-    print("First condition: weight matrix is symmetric")
+    print("First condition: weight matrix is symmetric", end=": ")
     print("PASSED") if is_symmetric(matrix) else print("FAILED")
-    print("Second condition: weight matrix diagonal is zeroes")
+    print("Second condition: weight matrix diagonal is zeroes", end=": ")
     print("PASSED") if is_diagonal_greater_equal_zero(matrix) else print("FAILED")
 
     if sync_mode is True:
-        print("Third condition: weight matrix has positive definiteness")
+        print("Third condition: weight matrix has positive definiteness", end=": ")
         print("PASSED") if is_positively_defined(matrix) else print("FAILED")
 
     if sync_mode is False and is_symmetric(matrix) and is_diagonal_greater_equal_zero(matrix) or sync_mode is True and is_symmetric(
