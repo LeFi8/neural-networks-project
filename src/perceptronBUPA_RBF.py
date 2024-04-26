@@ -121,12 +121,12 @@ if __name__ == "__main__":
 
     # Uncomment to try data set
 
-    # DATA SET 1
-    w0 = [0.2, 1, 1, 10]
-    perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
-
     # # DATA SET 1
-    # w0 = [.2, 1, 1, 0.]
+    # w0 = [0.2, 1, 1, 0]
+    # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
+
+    # DATA SET 1
+    # w0 = [-.31, .5, .5, 0.]
     # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
 
     # # DATA SET 2
@@ -134,8 +134,8 @@ if __name__ == "__main__":
     # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor)
 
     # # DATA SET 3
-    # w0 = [1., 0, 1., 0.]
-    # perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor_negation)
+    w0 = [1., 0, 1., 0.]
+    perceptron = PerceptronBUPA_RBF(x, w0, perceptron_func=perceptron_xor_negation)
 
     perceptron.train()
     perceptron.plot_rbf_boundaries()
